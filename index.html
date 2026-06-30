@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Evalyze - Analisis Evaluasi Pembelajaran</title>
+
+  <!-- Logo tab browser -->
+  <link rel="icon" type="image/png" href="logo-web-evpem.png" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="hero">
+    <nav class="navbar">
+      <div class="brand">
+        <img src="logo-web-evpem.png" alt="Logo Evalyze" class="logo-img">
+
+        <div>
+          <h1>Evalyze</h1>
+          <p>Analisis Evaluasi Pembelajaran</p>
+        </div>
+      </div>
+
+      <a class="nav-link" href="#analisis">Mulai Analisis</a>
+    </nav>
+
+    <section class="hero-content">
+      <div>
+        <span class="badge">Responsive • Web App • Siap Pakai</span>
+
+        <h2>Hitung Validitas, Daya Pembeda, Tingkat Kesukaran, dan Reliabilitas</h2>
+
+        <p>
+          Masukkan data skor siswa dalam bentuk tabel. Isi nilai dengan angka
+          <b>1</b> jika benar dan <b>0</b> jika salah.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#analisis" class="btn primary">Analisis Sekarang</a>
+          <button class="btn ghost" id="btnSampleTop" type="button">Lihat Contoh Data</button>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <h3>Fitur Utama</h3>
+        <ul>
+          <li>Input data langsung melalui tabel</li>
+          <li>Validitas butir soal</li>
+          <li>Tingkat kesukaran soal</li>
+          <li>Daya pembeda soal</li>
+          <li>Reliabilitas KR-20</li>
+          <li>Export hasil analisis ke CSV</li>
+        </ul>
+      </div>
+    </section>
+  </header>
+
+  <main>
+
+    <section class="info-grid">
+      <article class="info-card">
+        <h3>Validitas</h3>
+        <p>Mengukur hubungan skor butir soal dengan skor total siswa.</p>
+      </article>
+
+      <article class="info-card">
+        <h3>Daya Pembeda</h3>
+        <p>Mengukur kemampuan soal membedakan siswa kelompok atas dan bawah.</p>
+      </article>
+
+      <article class="info-card">
+        <h3>Tingkat Kesukaran</h3>
+        <p>Mengukur mudah atau sukarnya soal berdasarkan jumlah jawaban benar.</p>
+      </article>
+
+      <article class="info-card">
+        <h3>Reliabilitas</h3>
+        <p>Mengukur konsistensi keseluruhan instrumen tes.</p>
+      </article>
+    </section>
+
+    <section class="panel" id="analisis">
+      <div class="section-title">
+        <span class="badge">Input Data</span>
+        <h2>Masukkan Data Jawaban Siswa</h2>
+        <p>
+          Isi nama siswa dan nilai setiap butir soal. Kolom nilai hanya bisa diisi angka
+          <b>0</b> atau <b>1</b>.
+        </p>
+      </div>
+
+      <div class="input-layout">
+        <div class="input-card">
+
+          <div class="setting-grid">
+            <div class="form-row">
+              <label for="groupPercent">Kelompok Atas/Bawah untuk Daya Pembeda</label>
+              <select id="groupPercent">
+                <option value="0.27">27%</option>
+                <option value="0.33">33%</option>
+                <option value="0.50">50%</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <label for="rTable">R tabel / batas validitas <span>(opsional)</span></label>
+              <input id="rTable" type="number" step="0.001" min="0" placeholder="Contoh: 0.361" />
+            </div>
+          </div>
+
+          <div class="table-guide-layout">
+
+            <div class="score-area">
+              <label>Data Skor Siswa</label>
+
+              <div class="table-input-actions">
+                <button class="btn secondary" id="btnAddStudent" type="button">+ Tambah Siswa</button>
+                <button class="btn secondary" id="btnAddQuestion" type="button">+ Tambah Soal</button>
+                <button class="btn ghost-dark" id="btnResetTable" type="button">Reset Tabel</button>
+              </div>
+
+              <div class="score-table-wrapper">
+                <table class="score-input-table">
+                  <thead id="scoreTableHead"></thead>
+                  <tbody id="scoreTableBody"></tbody>
+                </table>
+              </div>
+
+              <div class="button-group action-under-table">
+                <button class="btn primary" id="btnAnalyze" type="button">Hitung Analisis</button>
+                <button class="btn secondary" id="btnSample" type="button">Isi Contoh Data</button>
+                <button class="btn ghost-dark" id="btnClear" type="button">Bersihkan</button>
+              </div>
+
+              <div id="alertBox" class="alert hidden"></div>
+            </div>
+
+            <aside class="guide-card">
+              <h3>Cara Mengisi</h3>
+              <ol>
+                <li>Setiap baris adalah satu siswa/responden.</li>
+                <li>Setiap kolom adalah satu butir soal.</li>
+                <li>Isi <b>1</b> jika jawaban benar.</li>
+                <li>Isi <b>0</b> jika jawaban salah.</li>
+                <li>Klik <b>Hitung Analisis</b>.</li>
+              </ol>
+
+              <div class="formula-box">
+                <h4>Rumus Singkat</h4>
+                <p><b>P</b> = B / JS</p>
+                <p><b>D</b> = P kelompok atas - P kelompok bawah</p>
+                <p><b>KR-20</b> = k/(k-1) × (1 - Σpq / Var total)</p>
+              </div>
+            </aside>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="results hidden" id="results">
+      <div class="section-title">
+        <span class="badge">Hasil</span>
+        <h2>Ringkasan Analisis</h2>
+      </div>
+
+      <div class="summary-grid">
+        <article class="summary-card">
+          <p>Jumlah Responden</p>
+          <h3 id="totalRespondents">0</h3>
+        </article>
+
+        <article class="summary-card">
+          <p>Jumlah Soal</p>
+          <h3 id="totalItems">0</h3>
+        </article>
+
+        <article class="summary-card">
+          <p>Rata-rata Skor</p>
+          <h3 id="meanScore">0</h3>
+        </article>
+
+        <article class="summary-card">
+          <p>Reliabilitas KR-20</p>
+          <h3 id="reliabilityScore">0</h3>
+          <span id="reliabilityLabel"></span>
+        </article>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn secondary" id="btnExport" type="button">Export CSV</button>
+        <button class="btn ghost-dark" id="btnPrint" type="button">Cetak / Simpan PDF</button>
+      </div>
+
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Tabel Analisis Butir Soal</h3>
+          <p>Geser tabel ke samping jika tampilan layar kecil.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Butir</th>
+                <th>Benar</th>
+                <th>P Kesukaran</th>
+                <th>Kategori</th>
+                <th>Daya Pembeda</th>
+                <th>Kategori</th>
+                <th>R Hitung</th>
+                <th>Validitas</th>
+                <th>Rekomendasi</th>
+              </tr>
+            </thead>
+            <tbody id="itemTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Skor Responden</h3>
+          <p>Data ini diurutkan dari skor tertinggi.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Peringkat</th>
+                <th>Responden</th>
+                <th>Skor Total</th>
+                <th>Persentase</th>
+                <th>Kelompok</th>
+              </tr>
+            </thead>
+            <tbody id="studentTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel explanation">
+      <div class="section-title">
+        <span class="badge">Kategori</span>
+        <h2>Pedoman Interpretasi</h2>
+      </div>
+
+      <div class="category-grid">
+        <article>
+          <h3>Tingkat Kesukaran</h3>
+          <p>0,00 - 0,30 = Sukar</p>
+          <p>0,31 - 0,70 = Sedang</p>
+          <p>0,71 - 1,00 = Mudah</p>
+        </article>
+
+        <article>
+          <h3>Daya Pembeda</h3>
+          <p>&lt; 0,00 = Buruk</p>
+          <p>0,00 - 0,19 = Jelek</p>
+          <p>0,20 - 0,39 = Cukup</p>
+          <p>0,40 - 0,69 = Baik</p>
+          <p>≥ 0,70 = Sangat Baik</p>
+        </article>
+
+        <article>
+          <h3>Validitas</h3>
+          <p>Jika R tabel diisi, soal valid bila R hitung ≥ R tabel.</p>
+          <p>Jika kosong, sistem menampilkan kategori korelasi.</p>
+        </article>
+
+        <article>
+          <h3>Reliabilitas</h3>
+          <p>&lt; 0,20 = Sangat Rendah</p>
+          <p>0,20 - 0,39 = Rendah</p>
+          <p>0,40 - 0,59 = Cukup</p>
+          <p>0,60 - 0,79 = Tinggi</p>
+          <p>≥ 0,80 = Sangat Tinggi</p>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Evalyze © 2026 • Website Analisis Evaluasi Pembelajaran</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
